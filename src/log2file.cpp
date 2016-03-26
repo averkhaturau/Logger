@@ -3,40 +3,38 @@
 #include <time.h>
 #include <Windows.h>
 
-namespace
+std::string pcType()
 {
-    std::string pcType()
-    {
-        SYSTEM_POWER_STATUS powerStatus = {};
-        GetSystemPowerStatus(&powerStatus);
-        if (powerStatus.BatteryFlag == 128)
-            return "desktop";
-        else
-            return "laptop";
-    }
+    SYSTEM_POWER_STATUS powerStatus = {};
+    GetSystemPowerStatus(&powerStatus);
+    if (powerStatus.BatteryFlag == 128)
+        return "desktop";
+    else
+        return "laptop";
+}
 
-    std::string osName()
-    {
+std::string osName()
+{
 #if defined(_WIN64)
-        return "win64";  // 64-bit programs run only on Win64
+    return "win64";  // 64-bit programs run only on Win64
 #elif defined(_WIN32)
-        // 32-bit programs run on both 32-bit and 64-bit Windows
-        // so must sniff
-        BOOL f64 = FALSE;
-        return (IsWow64Process(GetCurrentProcess(), &f64) && f64 ? "win64" : "win32");
+    // 32-bit programs run on both 32-bit and 64-bit Windows
+    // so must sniff
+    BOOL f64 = FALSE;
+    return (IsWow64Process(GetCurrentProcess(), &f64) && f64 ? "win64" : "win32");
 #endif
-    }
+}
 
-    std::string osVer()
-    {
+std::string osVer()
+{
 #pragma warning(push)
 #pragma warning(disable:4996)
-        OSVERSIONINFO osvi = { sizeof(OSVERSIONINFO) };
-        GetVersionEx(&osvi);
-        return std::to_string(osvi.dwMajorVersion) + "." + std::to_string(osvi.dwMinorVersion);
+    OSVERSIONINFO osvi = { sizeof(OSVERSIONINFO) };
+    GetVersionEx(&osvi);
+    return std::to_string(osvi.dwMajorVersion) + "." + std::to_string(osvi.dwMinorVersion);
 #pragma warning(pop)
-    }
 }
+
 
 void Log2File::enable(bool makeEnabled)
 {

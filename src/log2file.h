@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
-
+#include <functional>
 #include "log-helpers.h"
 
 class Log2File
