@@ -12,7 +12,7 @@ In your project, add Logger directory to include directories
 In your code:
 '''
 // in your includes section
-#include <logger.h>
+\#include <logger.h>
 
 // in your code
 Logger::instance() << "log message";
