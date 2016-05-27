@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 3.1)
-
 project(Logger)
 
-set(CMAKE_INSTALL_PREFIX bin)
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-include_directories(src)
+set(SRC
+	logger.h
+	log2file.cpp
+	log2file.h
+	log-helpers.cpp
+	log-helpers.h
+)
+
+add_library(${PROJECT_NAME} ${SRC})
