@@ -3,21 +3,24 @@
 Usage:
 
 In your repository:
-'''
-git submodule https://github.com/averkhaturau/Logger
-'''
 
-In your project, add Logger directory to include directories
+git submodule add https://github.com/averkhaturau/Logger
 
-In CMake, '''include_subdirectory(Logger)'''
+In your project, add Logger directory to include directories.
+
+E.g. in CMake, include_subdirectory(Logger),
+
+in QBS, import "Logger/Logger.qbs" as logger;, and in your app "logger{}"
+
 
 In your code:
-'''
+
 // in your includes section
 \#include \<logger.h\>
 
 // in your code
 Logger::instance() \<\< "log message";
-'''
+
 
 Enjoy!
+

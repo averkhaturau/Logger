@@ -10,5 +10,7 @@ set(SRC
 	log-helpers.h
 )
 
+// add_definitions("-DBRAND_COMPANYNAME=\"YourCompany\" -DBRAND_NAME=\"YouApp\"")
+
 add_library(${PROJECT_NAME} ${SRC})
 set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "libs")
