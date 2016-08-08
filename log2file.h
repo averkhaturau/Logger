@@ -39,7 +39,7 @@ public:
     std::streamoff currFileSize();
     void openFile(const std::tr2::sys::path& filename);
 
-    void setLogHeaderProvider(std::function<std::string()> fn) {logHeaderProvider = fn;};
+    void setLogHeaderProvider(std::function<std::string()> fn) {logHeaderProvider = fn;}
 
 private:
     Log2File(const Log2File&) = delete;

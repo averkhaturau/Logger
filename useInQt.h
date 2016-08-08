@@ -20,7 +20,10 @@
 void logAllTracing(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     static const char* const severity[] = {"[Debug]", "[Info]", "[Warning]", "[Critical]", "[Fatal]", "[System]"};
-
+    // log into a file
     Logger::instance() << severity[type] << " " << msg.toStdWString();
-    std::cout << severity[type] << ": " << msg.toStdString() << " (" << context.file << ":" << context.line << ", " << context.function << ");\n";
+    // log to debug console
+    std::cout << severity[type] << ": " << msg.toStdString()
+              << " (" << context.file << ":" << context.line
+              << ", " << (context.function ? context.function : "") << ");\n";
 }
