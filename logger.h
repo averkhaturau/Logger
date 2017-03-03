@@ -36,8 +36,6 @@ public:
         return l2f;
     }
 
-    bool log2console = false;
-
     class LogRecord
     {
     public:
@@ -86,7 +84,6 @@ public:
         return LogRecord(*this) << mess;
     }
 
-
     class ForceToConsole {};
     template<>
     LogRecord operator<<(ForceToConsole&&)
@@ -94,11 +91,17 @@ public:
         return LogRecord(*this, true);
     }
 
+    void setLogToConsole(bool b){log2console = b;}
+    bool logToConsole()const{return log2console;}
+
 private:
     Logger(std::tr2::sys::path const& fp) : Log2File(fp) {}
     Logger(Logger const&) = delete;
     Logger(Logger&&) = delete;
     Logger() = delete;
+
+    bool log2console = false;
+
 };
 
 __declspec(selectany) std::mutex Logger::LogRecord::allowOnlyOneRecord;
