@@ -16,6 +16,7 @@
 #include <Windows.h>
 #include <Shlobj.h>
 #endif
+#include <ostream>
 
 class Logger : public Log2File
 {
@@ -35,27 +36,35 @@ public:
         return l2f;
     }
 
+    bool log2console = false;
+
     class LogRecord
     {
     public:
-        explicit LogRecord(Log2File& l2f)
-            : my_l2f(l2f)
+        explicit LogRecord(Logger& l2f, bool dub2console = false)
+            : my_l2f(l2f), duplicateToConsole(dub2console || l2f.log2console)
         {
             allowOnlyOneRecord.lock();
             my_l2f << timestamp(std::chrono::system_clock::now());
         }
 
-        LogRecord(LogRecord&& a) : my_l2f(a.my_l2f) { a.shouldFlush = false; }
+        LogRecord(LogRecord&& a) : my_l2f(a.my_l2f), duplicateToConsole(std::move(a.duplicateToConsole)) { a.shouldFlush = false; }
+
         template <class Arg_t>
         LogRecord&& operator<<(Arg_t&& mess)
         {
             my_l2f << mess;
+            if (duplicateToConsole)
+                std::cout << mess;
             return std::move(*this);
         }
+
         ~LogRecord()
         {
             if (shouldFlush) {
                 my_l2f << "\n"; my_l2f.flush();
+                if (duplicateToConsole)
+                    std::cout << std::endl;
                 allowOnlyOneRecord.unlock();
             }
         }
@@ -67,12 +76,22 @@ public:
 
         Log2File& my_l2f;
         bool shouldFlush = true;
+
+        bool duplicateToConsole;
     };
 
     template <class Arg_t>
     LogRecord operator<<(Arg_t&& mess)
     {
         return LogRecord(*this) << mess;
+    }
+
+
+    class ForceToConsole {};
+    template<>
+    LogRecord operator<<(ForceToConsole&&)
+    {
+        return LogRecord(*this, true);
     }
 
 private:
