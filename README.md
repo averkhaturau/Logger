@@ -8,7 +8,8 @@ git submodule add https://github.com/averkhaturau/Logger
 
 In your project, add Logger directory to include directories.
 
-E.g. in CMake, include_subdirectory(Logger),
+E.g. in CMake, add_subdirectory(Logger),
+also set Logger lib to your executable dependencies
 
 in QBS, import "Logger/Logger.qbs" as logger;, and in your app "logger{}"
 

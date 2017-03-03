@@ -10,7 +10,7 @@ set(SRC
 	log-helpers.h
 )
 
-add_definitions("-DBRAND_COMPANYNAME=\"ASTAP\" -DBRAND_NAME=\"ASTAP\"")
+#add_definitions("-DBRAND_COMPANYNAME=\"CompanyName\" -DBRAND_NAME=\"BrandName\"")
 
 add_library(${PROJECT_NAME} ${SRC})
 set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "libs")
