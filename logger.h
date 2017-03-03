@@ -11,12 +11,13 @@
 #include "log2file.h"
 #include <filesystem>
 #include <mutex>
+#include <iostream>
 
 #ifdef _WIN32
 #include <Windows.h>
 #include <Shlobj.h>
 #endif
-#include <ostream>
+
 
 class Logger : public Log2File
 {
