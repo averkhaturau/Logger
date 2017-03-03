@@ -50,7 +50,7 @@ public:
         LogRecord(LogRecord&& a) : my_l2f(a.my_l2f), duplicateToConsole(std::move(a.duplicateToConsole)) { a.shouldFlush = false; }
 
         template <class Arg_t>
-        LogRecord&& operator<<(Arg_t&& mess)
+        LogRecord&& operator<<(Arg_t const& mess)
         {
             my_l2f << mess;
             if (duplicateToConsole)
@@ -92,8 +92,8 @@ public:
         return LogRecord(*this, true);
     }
 
-    void setLogToConsole(bool b){log2console = b;}
-    bool logToConsole()const{return log2console;}
+    void setLogToConsole(bool b) {log2console = b;}
+    bool logToConsole()const {return log2console;}
 
 private:
     Logger(std::tr2::sys::path const& fp) : Log2File(fp) {}
