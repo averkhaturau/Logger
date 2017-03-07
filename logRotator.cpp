@@ -14,6 +14,12 @@ std::string LogRotator::getLogfilenamePrefix()
 #endif
 }
 
+std::tr2::sys::path LogRotator::currentFilename()
+{
+    static auto lfPrefix = getLogfilenamePrefix() + ("/" BRAND_COMPANYNAME "/") + m_moduleName + "/logfile-";
+    return std::tr2::sys::path(lfPrefix + timestamp_filename().substr(0, 10) + ".txt");
+}
+
 void LogRotator::checkRotateLogfile()
 {
     if (rotationTrigger && rotationTrigger()) {
@@ -22,7 +28,7 @@ void LogRotator::checkRotateLogfile()
         m_logger.enable(false);
         auto archFilename = m_logger.logFilename();
         m_logger.openFile(currentFilename());
-        std::tr2::sys::rename(Logger::instance().logFilename(), archFilename, std::error_code());
+        //std::tr2::sys::rename(Logger::instance().logFilename(), archFilename, std::error_code());
         m_logger.enable(isLoggerEnabled);
         m_logger << "Continuing the logfile " << archFilename.string();
     }

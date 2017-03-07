@@ -23,17 +23,15 @@ class Logger;
 
 class LogRotator
 {
+protected:
     static std::string getLogfilenamePrefix();
-    std::tr2::sys::path currentFilename()
-    {
-        static auto lfPrefix = getLogfilenamePrefix() + ("/" BRAND_COMPANYNAME "/" BRAND_NAME "/logfile-");
-        return std::tr2::sys::path(lfPrefix + timestamp_filename() + ".txt");
-    }
+    std::tr2::sys::path currentFilename();
+    std::string m_moduleName;
     std::function<bool()> rotationTrigger;
     Logger& m_logger;
 public:
-    LogRotator(Logger& logger, std::function<bool()> trigger)
-        : m_logger(logger), rotationTrigger(trigger) {}
+    LogRotator(Logger& logger, std::function<bool()> trigger, std::string const& moduleName)
+        : m_logger(logger), rotationTrigger(trigger), m_moduleName(moduleName) {}
 
     void checkRotateLogfile();
 };
