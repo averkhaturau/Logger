@@ -54,7 +54,7 @@ public:
         {
             my_l2f << mess;
             if (duplicateToConsole)
-                std::cout << mess;
+                std::cout << toUtf8(mess);
             return std::move(*this);
         }
 
