@@ -3,20 +3,15 @@
 #include "logger.h"
 
 
-std::tr2::sys::path LogRotator::currentFilename()
+std::string LogRotator::getLogfilenamePrefix()
 {
-
-    auto getLogfilenamePrefix = []() {
 #ifdef _WIN32
-        wchar_t logfileDir[MAX_PATH] = {};
-        SHGetFolderPathW(0, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, reinterpret_cast<LPWSTR>(logfileDir));
-        return std::tr2::sys::path(toUtf8(logfileDir)) / std::tr2::sys::path(BRAND_COMPANYNAME "/" BRAND_NAME "/logfile-");
+    wchar_t logfileDir[MAX_PATH] = {};
+    SHGetFolderPathW(0, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, reinterpret_cast<LPWSTR>(logfileDir));
+    return toUtf8(logfileDir);
 #else
-        return std::tr2::sys::path("logfile-");
+    return ".";
 #endif
-    };
-    static auto lfPrefix = getLogfilenamePrefix();
-    return std::tr2::sys::path(lfPrefix).append(timestamp_filename() + ".txt");
 }
 
 void LogRotator::checkRotateLogfile()
@@ -32,3 +27,4 @@ void LogRotator::checkRotateLogfile()
         m_logger << "Continuing the logfile " << archFilename.string();
     }
 }
+

@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <functional>
+#include "log-helpers.h"
 
 class Logger;
 
@@ -22,7 +23,12 @@ class Logger;
 
 class LogRotator
 {
-    std::tr2::sys::path currentFilename();
+    static std::string getLogfilenamePrefix();
+    std::tr2::sys::path currentFilename()
+    {
+        static auto lfPrefix = getLogfilenamePrefix() + ("/" BRAND_COMPANYNAME "/" BRAND_NAME "/logfile-");
+        return std::tr2::sys::path(lfPrefix + timestamp_filename() + ".txt");
+    }
     std::function<bool()> rotationTrigger;
     Logger& m_logger;
 public:
