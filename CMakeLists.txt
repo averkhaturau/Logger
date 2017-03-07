@@ -8,6 +8,8 @@ set(SRC
 	log2file.h
 	log-helpers.cpp
 	log-helpers.h
+	logRotator.h
+	logRotator.cpp
 )
 
 #add_definitions("-DBRAND_COMPANYNAME=\"CompanyName\" -DBRAND_NAME=\"BrandName\"")

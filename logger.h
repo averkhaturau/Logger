@@ -18,7 +18,6 @@
 #include <Shlobj.h>
 #endif
 
-
 class Logger : public Log2File
 {
 public:
