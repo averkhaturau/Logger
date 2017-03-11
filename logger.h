@@ -60,6 +60,7 @@ public:
         ~LogRecord()
         {
             if (shouldFlush) {
+                // must put line break here to be thread-safe
                 my_l2f << "\n"; my_l2f.flush();
                 if (duplicateToConsole)
                     std::cout << std::endl;
