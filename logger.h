@@ -39,8 +39,8 @@ public:
     class LogRecord
     {
     public:
-        explicit LogRecord(Logger& l2f, bool dub2console = false)
-            : my_l2f(l2f), duplicateToConsole(dub2console || l2f.log2console)
+        explicit LogRecord(Logger& l2f, bool dub2console)
+            : my_l2f(l2f), duplicateToConsole(dub2console)
         {
             allowOnlyOneRecord.lock();
             my_l2f << timestamp(std::chrono::system_clock::now());
@@ -82,15 +82,14 @@ public:
     template <class Arg_t>
     LogRecord operator<<(Arg_t&& mess)
     {
-        return LogRecord(*this) << mess;
+        return LogRecord(*this, log2console) << mess;
     }
 
     class ForceToConsole {};
     template<>
-    LogRecord operator<<(ForceToConsole&&)
-    {
-        return LogRecord(*this, true);
-    }
+    LogRecord operator<<(ForceToConsole&&) { return LogRecord(*this, true); }
+    class LogfileOnly {};
+    LogRecord operator<<(LogfileOnly&&) { return LogRecord(*this, false); }
 
     void setLogToConsole(bool b) {log2console = b;}
     bool logToConsole()const {return log2console;}
