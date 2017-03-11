@@ -40,7 +40,10 @@ template<class Arg_t> inline std::_Smanip<Arg_t> toUtf8(std::_Smanip<Arg_t> arg)
 //{
 //    return std::to_string(arg);
 //}
+template<> inline std::string toUtf8(short arg) { return std::to_string(arg); }
 template<> inline std::string toUtf8(int arg) { return std::to_string(arg); }
+template<> inline std::string toUtf8(long arg) { return std::to_string(arg); }
+template<> inline std::string toUtf8(long long arg) { return std::to_string(arg); }
 template<> inline std::string toUtf8(unsigned int arg) { return std::to_string(arg); }
 template<> inline std::string toUtf8(unsigned long long arg) { return std::to_string(arg); }
 template<> inline std::string toUtf8(unsigned short arg) { return std::to_string(arg); }
