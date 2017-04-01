@@ -48,6 +48,7 @@ std::string osVer()
 #ifdef _WIN32
 #pragma warning(push)
 #pragma warning(disable:4996)
+#pragma warning(disable:28159)
     OSVERSIONINFO osvi = { sizeof(OSVERSIONINFO) };
     GetVersionEx(&osvi);
     return std::to_string(osvi.dwMajorVersion) + "." + std::to_string(osvi.dwMinorVersion);
