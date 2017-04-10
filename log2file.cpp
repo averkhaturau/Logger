@@ -48,6 +48,7 @@ std::string osVer()
 #ifdef _WIN32
 #pragma warning(push)
 #pragma warning(disable:4996)
+#pragma warning(disable:28159)
     OSVERSIONINFO osvi = { sizeof(OSVERSIONINFO) };
     GetVersionEx(&osvi);
     return std::to_string(osvi.dwMajorVersion) + "." + std::to_string(osvi.dwMinorVersion);
@@ -105,11 +106,11 @@ Log2File::Log2File(const std::tr2::sys::path& filename)
     openFile(filename);
 }
 
-void Log2File::openFile(const std::tr2::sys::path& filename)
+void Log2File::openFile(const std::tr2::sys::path& fileName)
 {
-    if (logfile.is_open() && this->filename == filename)
+    if (logfile.is_open() && this->filename == fileName)
         return;
-    this->filename = filename;
+    this->filename = fileName;
     std::error_code ec;
     if (!std::tr2::sys::exists(filename, ec))
         std::tr2::sys::create_directories(filename.parent_path(), ec);
