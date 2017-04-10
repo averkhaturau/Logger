@@ -94,7 +94,7 @@ public:
     void setLogToConsole(bool b) {log2console = b;}
     bool logToConsole()const {return log2console;}
 
-private:
+protected: // as you may need inheritance from Logger
     Logger(std::tr2::sys::path const& fp) : Log2File(fp) {}
     Logger(Logger const&) = delete;
     Logger(Logger&&) = delete;
