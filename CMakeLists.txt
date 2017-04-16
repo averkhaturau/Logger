@@ -4,6 +4,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SRC
 	logger.h
+	logger.cpp
 	log2file.cpp
 	log2file.h
 	log-helpers.cpp

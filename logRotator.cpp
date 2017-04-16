@@ -2,6 +2,11 @@
 #include "log-helpers.h"
 #include "logger.h"
 
+#ifdef _WIN32
+#include <Windows.h>
+#include <Shlobj.h>
+#endif
+
 
 std::string LogRotator::getLogfilenamePrefix()
 {
