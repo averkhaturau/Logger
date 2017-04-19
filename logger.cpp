@@ -6,8 +6,6 @@
 #include <Shlobj.h>
 #endif
 
-std::mutex Logger::LogRecord::allowOnlyOneRecord;
-
 Logger& Logger::instance()
 {
     auto getLogfilename = []() {
@@ -23,13 +21,15 @@ Logger& Logger::instance()
     return l2f;
 }
 
-Logger::LogRecord::LogRecord(Logger& l2f, bool dub2console) : my_l2f(l2f), duplicateToConsole(dub2console)
+Logger::LogRecord::LogRecord(Logger& l2f, bool dub2console, std::mutex& m)
+    : allowOnlyOneRecord(m), my_l2f(l2f), duplicateToConsole(dub2console)
 {
     allowOnlyOneRecord.lock();
     my_l2f << timestamp(std::chrono::system_clock::now());
 }
 
-Logger::LogRecord::LogRecord(LogRecord&& a) : my_l2f(a.my_l2f), duplicateToConsole(std::move(a.duplicateToConsole))
+Logger::LogRecord::LogRecord(LogRecord&& a)
+    : allowOnlyOneRecord(a.allowOnlyOneRecord), my_l2f(a.my_l2f), duplicateToConsole(std::move(a.duplicateToConsole))
 {
     a.shouldFlush = false;
 }

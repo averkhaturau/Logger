@@ -22,7 +22,7 @@ public:
     class LogRecord
     {
     public:
-        explicit LogRecord(Logger& l2f, bool dub2console);
+        explicit LogRecord(Logger& l2f, bool dub2console, std::mutex& m);
 
         LogRecord(LogRecord&& a);
 
@@ -40,25 +40,25 @@ public:
         LogRecord() = delete;
         LogRecord(LogRecord const&) = delete;
 
-        static std::mutex allowOnlyOneRecord;
-
+        std::mutex& allowOnlyOneRecord;
         Log2File& my_l2f;
         bool shouldFlush = true;
 
         bool duplicateToConsole;
     };
 
+
     template <class Arg_t>
     LogRecord operator<<(Arg_t&& mess)
     {
-        return LogRecord(*this, log2console) << mess;
+        return LogRecord(*this, log2console, allowOnlyOneRecord) << mess;
     }
 
     class ForceToConsole {};
     template<>
-    LogRecord operator<<(ForceToConsole&&) { return LogRecord(*this, true); }
+    LogRecord operator<<(ForceToConsole&&) { return LogRecord(*this, true, allowOnlyOneRecord); }
     class LogfileOnly {};
-    LogRecord operator<<(LogfileOnly&&) { return LogRecord(*this, false); }
+    LogRecord operator<<(LogfileOnly&&) { return LogRecord(*this, false, allowOnlyOneRecord); }
 
     void setLogToConsole(bool b) {log2console = b;}
     bool logToConsole()const {return log2console;}
@@ -71,4 +71,5 @@ protected: // as you may need inheritance from Logger
 
     bool log2console = false;
 
+    std::mutex allowOnlyOneRecord;
 };
